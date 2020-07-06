@@ -55,6 +55,7 @@ class utilisateurs{
         session_destroy();
 
     }
+    
     public function delete(){
         session_start();
         //Connection bdd
@@ -66,13 +67,15 @@ class utilisateurs{
 
         session_destroy();
     }
+    
     public function update($login, $password, $email, $firstname,
     $lastname){
         $bdd = mysqli_connect('localhost', 'root', '', 'classes');
          //update
-         $delete = mysqli_query($bdd, "UPDATE utilisateurs SET login=$login, password=$password, email=$email, firstname=$firstname,
+         $update = mysqli_query($bdd, "UPDATE utilisateurs SET login=$login, password=$password, email=$email, firstname=$firstname,
          lastname=$lastname");
     }
+
     public function isConnected(){
         session_start();
         $is_connected = $_SESSION['login'] ? 'yes':'no' ;
@@ -81,26 +84,32 @@ class utilisateurs{
             return true;
         }else return false;
     }
+    
     public function getAllInfos(){
         return $this->login;
         return $this->email;
         return $this->firstname;
         return $this->lastname;
     }
+    
     public function getLogin(){
         return $this->login;
     }
     public function getEmail(){
         return $this->email;
     }
+    
     public function getFirstname(){
         return $this->firstname;
     }
+    
     public function getLastname(){
         return $this->lastname;
     }
+    
     public function refresh(){
 
     }
+    
 }
 ?>

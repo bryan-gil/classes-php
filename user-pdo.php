@@ -10,13 +10,14 @@ class userpdo{
     public function register($login, $password, $email, $firstname,
     $lastname){
        //Connection bdd
-    $bdd = mysqli_connect('localhost', 'root', '', 'classes');
+    $bdd = new PDO("mysql:host=localhost;dbname=classes; charset=utf8", "root", "");
     $password = password_hash($password, PASSWORD_BCRYPT, ['cost' => 15]);
     //insertion dans la bdd 
-    $insert = mysqli_query($bdd, "INSERT INTO utilisateurs (login, password, email, firstname, lastname) VALUES('$login', '$password', '$email', '$firstname', '$lastname')");
+    $insert = $bdd->prepare("INSERT INTO utilisateurs (login, password, email, firstname, lastname) VALUES(?, ?, ?, ?, ?)");
+    $insert->execute([$login, $password, $email, $firstname]);
     //récupérationdes infos
-    $select = mysqli_query($bdd, "SELECT * FROM utilisateurs");
-    $utilisateurs = mysqli_fetch_array($select);
+    $select = $bdd->query("SELECT * FROM utilisateurs");
+    $utilisateurs = $select->fetchAll();
 
         return $utilisateurs;
     }
@@ -24,10 +25,10 @@ class userpdo{
     public function connect($login, $password){
     session_start();
          //Connection bdd
-    $bdd = mysqli_connect('localhost', 'root', '', 'classes');
+         $bdd = new PDO("mysql:host=localhost;dbname=classes; charset=utf8", "root", "");
 
-    $select = mysqli_query($bdd, "SELECT * FROM utilisateurs WHERE login = $login");
-    $verify = mysqli_fetch_array($select);
+    $select = $bdd->query("SELECT * FROM utilisateurs WHERE login = $login");
+    $verify = $select->fetchAll();
 
     //Vérification si login & password == $_POST['login'] & $_POST['password']
     if (!empty($verify)) {
@@ -55,22 +56,24 @@ class userpdo{
         session_destroy();
 
     }
+
     public function delete(){
         session_start();
         //Connection bdd
         if ($_SESSION['login']) {
-            $bdd = mysqli_connect('localhost', 'root', '', 'classes');
+            $bdd = new PDO("mysql:host=localhost;dbname=classes; charset=utf8", "root", "");
             //delete
-            $delete = mysqli_query($bdd, "DELETE FROM utilisateurs WHERE id = '" . $this->id . "'");
+            $delete = $bdd->query("DELETE FROM utilisateurs WHERE id = '" . $this->id . "'");
         }
 
         session_destroy();
     }
+
     public function update($login, $password, $email, $firstname,
     $lastname){
-        $bdd = mysqli_connect('localhost', 'root', '', 'classes');
+         $bdd = new PDO("mysql:host=localhost;dbname=classes; charset=utf8", "root", "");
          //update
-         $delete = mysqli_query($bdd, "UPDATE utilisateurs SET login=$login, password=$password, email=$email, firstname=$firstname,
+         $update = $bdd->query("UPDATE utilisateurs SET login=$login, password=$password, email=$email, firstname=$firstname,
          lastname=$lastname");
     }
     public function isConnected(){
@@ -81,26 +84,33 @@ class userpdo{
             return true;
         }else return false;
     }
+
     public function getAllInfos(){
         return $this->login;
         return $this->email;
         return $this->firstname;
         return $this->lastname;
     }
+
     public function getLogin(){
         return $this->login;
     }
+
     public function getEmail(){
         return $this->email;
     }
+
     public function getFirstname(){
         return $this->firstname;
     }
+
     public function getLastname(){
         return $this->lastname;
     }
+
     public function refresh(){
 
     }
+
 }
 ?>
