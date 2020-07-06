@@ -94,6 +94,7 @@ class utilisateurs{
     
     public function getLogin(){
         return $this->login;
+        
     }
     public function getEmail(){
         return $this->email;
