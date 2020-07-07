@@ -7,6 +7,13 @@ class utilisateurs{
     public $firstname;
     public $lastname;
 
+    public function __construct($login, $email, $firstname, $lastname){
+        $this->login=$login;
+        $this->email=$email;
+        $this->firstname=$firstname;
+        $this->lastname=$lastname;
+    }
+
     public function register($login, $password, $email, $firstname,
     $lastname){
        //Connection bdd
@@ -40,11 +47,6 @@ class utilisateurs{
 
     }else echo "Impossible de vous authentifier correctement.";
 
-    $this->$login;
-    $this->$password;
-    $this->$email;
-    $this->$firstname;
-    $this->$lastname;
     }
 
 
@@ -86,10 +88,12 @@ class utilisateurs{
     }
     
     public function getAllInfos(){
-        return $this->login;
-        return $this->email;
-        return $this->firstname;
-        return $this->lastname;
+    return [
+        $this->login,
+        $this->email,
+        $this->firstname,
+        $this->lastname
+    ];
     }
     
     public function getLogin(){

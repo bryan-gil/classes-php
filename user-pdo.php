@@ -7,6 +7,14 @@ class userpdo{
     public $firstname;
     public $lastname;
 
+    
+    public function __construct($login, $email, $firstname, $lastname){
+        $this->login=$login;
+        $this->email=$email;
+        $this->firstname=$firstname;
+        $this->lastname=$lastname;
+    }
+
     public function register($login, $password, $email, $firstname,
     $lastname){
        //Connection bdd
@@ -14,7 +22,7 @@ class userpdo{
     $password = password_hash($password, PASSWORD_BCRYPT, ['cost' => 15]);
     //insertion dans la bdd 
     $insert = $bdd->prepare("INSERT INTO utilisateurs (login, password, email, firstname, lastname) VALUES(?, ?, ?, ?, ?)");
-    $insert->execute([$login, $password, $email, $firstname]);
+    $insert->execute([$login, $password, $email, $firstname, $lastname]);
     //récupérationdes infos
     $select = $bdd->query("SELECT * FROM utilisateurs");
     $utilisateurs = $select->fetchAll();
@@ -41,11 +49,8 @@ class userpdo{
 
     }else echo "Impossible de vous authentifier correctement.";
 
-    $this->$login;
-    $this->$password;
-    $this->$email;
-    $this->$firstname;
-    $this->$lastname;
+    $this->$login=$login;
+    $this->$password=$password;
     }
 
 
@@ -109,8 +114,12 @@ class userpdo{
     }
 
     public function refresh(){
-
+        //UPDATE
     }
 
 }
+$user = new userpdo("ididid", "hu", "hu@gmail.com", "pu");
+
+var_dump($user);
+
 ?>
